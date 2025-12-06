@@ -73,6 +73,21 @@ npm run cap:sync
 npm run cap:open android
 ```
 
+### Deploy to Cloudflare Pages
+
+Since this is an SPA, you can deploy it as a static site to Cloudflare Pages.
+
+1. Login to Cloudflare (first time only):
+```bash
+npx wrangler login
+```
+
+2. Deploy:
+```bash
+npm run deploy
+```
+This will build the app and deploy the `build/client` directory to Cloudflare Pages.
+
 ### iOS (macOS only)
 ```bash
 npm run build
