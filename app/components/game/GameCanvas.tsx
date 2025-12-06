@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Player, Level } from '~/types/game';
 import { calculateSharedCamera } from './Camera';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '~/utils/constants';
@@ -14,7 +14,40 @@ interface GameCanvasProps {
 
 export function GameCanvas({ player1, player2, level, camera, gameRef, isSinglePlayer = false }: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
+  const [canvasScale, setCanvasScale] = useState(1);
+
+  // Handle responsive sizing
+  useEffect(() => {
+    const updateScale = () => {
+      if (!containerRef.current) return;
+      
+      const container = containerRef.current;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight || window.innerHeight * 0.6;
+      
+      // Calculate scale to fit canvas in container while maintaining aspect ratio
+      const scaleX = containerWidth / CANVAS_WIDTH;
+      const scaleY = containerHeight / CANVAS_HEIGHT;
+      const scale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
+      
+      setCanvasScale(scale);
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    window.addEventListener('orientationchange', updateScale);
+    
+    // Delay to ensure container is properly sized
+    const timeout = setTimeout(updateScale, 100);
+
+    return () => {
+      window.removeEventListener('resize', updateScale);
+      window.removeEventListener('orientationchange', updateScale);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -83,12 +116,26 @@ export function GameCanvas({ player1, player2, level, camera, gameRef, isSingleP
   }, [player1, player2, level, camera, isSinglePlayer]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      className="border-2 border-lena rounded-lg shadow-[0_0_30px_rgba(0,212,255,0.3)] max-w-full"
-    />
+    <div 
+      ref={containerRef}
+      className="w-full max-w-4xl flex items-center justify-center game-canvas-container"
+      style={{ 
+        maxHeight: 'calc(100vh - 180px)',
+        minHeight: '200px'
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        className="border-2 border-lena rounded-lg shadow-[0_0_30px_rgba(0,212,255,0.3)]"
+        style={{
+          width: CANVAS_WIDTH * canvasScale,
+          height: CANVAS_HEIGHT * canvasScale,
+          imageRendering: 'pixelated'
+        }}
+      />
+    </div>
   );
 }
 

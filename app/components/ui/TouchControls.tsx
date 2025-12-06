@@ -7,12 +7,14 @@ interface TouchControlsProps {
   onPlayer1Touch: (button: keyof TouchButtons, pressed: boolean) => void;
   onPlayer2Touch: (button: keyof TouchButtons, pressed: boolean) => void;
   isSinglePlayer?: boolean;
+  position: 'left' | 'right';
 }
 
 export function TouchControls({
   onPlayer1Touch,
   onPlayer2Touch,
   isSinglePlayer = false,
+  position,
 }: TouchControlsProps) {
   const handlePlayer1Move = (direction: { left: boolean; right: boolean; jump: boolean }) => {
     onPlayer1Touch('left', direction.left);
@@ -26,35 +28,44 @@ export function TouchControls({
     onPlayer2Touch('jump', direction.jump);
   };
 
-  if (isSinglePlayer) {
-    // Single player: one large joystick centered at bottom
+  // Left side control - always Player 1
+  if (position === 'left') {
     return (
-      <div className="fixed bottom-4 left-0 right-0 flex justify-center px-4">
+      <div className="flex items-center justify-center h-full">
         <AnalogJoystick
           onMove={handlePlayer1Move}
           color="#ff9500"
-          label="Player 1"
+          label="P1"
           side="left"
         />
       </div>
     );
   }
 
-  // Two player: joysticks on left and right sides
-  return (
-    <div className="fixed bottom-4 left-0 right-0 flex justify-between px-4">
-      <AnalogJoystick
-        onMove={handlePlayer1Move}
-        color="#ff9500"
-        label="Player 1"
-        side="left"
-      />
-      <AnalogJoystick
-        onMove={handlePlayer2Move}
-        color="#00d4ff"
-        label="Player 2"
-        side="right"
-      />
-    </div>
-  );
+  // Right side control - Player 2 in 2P mode, or nothing in 1P mode
+  if (position === 'right') {
+    if (isSinglePlayer) {
+      // Show empty placeholder in 1P mode (or could show P1 jump button)
+      return (
+        <div className="flex items-center justify-center h-full opacity-30">
+          <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center">
+            <span className="text-gray-600 text-xs">1P</span>
+          </div>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="flex items-center justify-center h-full">
+        <AnalogJoystick
+          onMove={handlePlayer2Move}
+          color="#00d4ff"
+          label="P2"
+          side="right"
+        />
+      </div>
+    );
+  }
+
+  return null;
 }

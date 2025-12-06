@@ -97,35 +97,33 @@ export function AnalogJoystick({ onMove, color, label, side }: AnalogJoystickPro
 
   return (
     <div
-      className={`flex flex-col items-center gap-2 ${side === 'left' ? 'items-start' : 'items-end'}`}
+      className={`flex flex-col items-center gap-1 analog-joystick`}
     >
-      <span className="text-sm font-bold" style={{ color }}>{label}</span>
       <div
         ref={containerRef}
-        className="relative w-28 h-28 rounded-full border-2 flex items-center justify-center touch-none"
+        className="relative w-20 h-20 rounded-full border-2 flex items-center justify-center touch-none"
         style={{
           borderColor: color,
           background: `radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%)`,
-          boxShadow: `0 0 20px ${color}40, inset 0 0 20px ${color}20`,
+          boxShadow: `0 0 15px ${color}40, inset 0 0 15px ${color}20`,
         }}
       >
         {/* Direction indicators */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xl opacity-40" style={{ color }}>↑</div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xl opacity-40" style={{ color }}>↓</div>
-        <div className="absolute left-2 top-1/2 -translate-y-1/2 text-xl opacity-40" style={{ color }}>←</div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xl opacity-40" style={{ color }}>→</div>
+        <div className="absolute top-1 left-1/2 -translate-x-1/2 text-sm opacity-40" style={{ color }}>↑</div>
+        <div className="absolute left-1 top-1/2 -translate-y-1/2 text-sm opacity-40" style={{ color }}>←</div>
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 text-sm opacity-40" style={{ color }}>→</div>
         
         {/* Center stick */}
         <div
           ref={stickRef}
-          className="w-12 h-12 rounded-full transition-transform duration-75"
+          className="w-8 h-8 rounded-full transition-transform duration-75"
           style={{
             background: `linear-gradient(135deg, ${color} 0%, ${color}80 100%)`,
-            boxShadow: `0 0 15px ${color}80`,
+            boxShadow: `0 0 10px ${color}80`,
           }}
         />
       </div>
-      <span className="text-xs text-gray-500">Drag to move, Up to jump</span>
+      <span className="text-xs font-bold" style={{ color }}>{label}</span>
     </div>
   );
 }

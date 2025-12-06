@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { Home, RotateCcw, Trophy, Play } from 'lucide-react';
+import { Home, RotateCcw, Trophy, Play, RotateCw } from 'lucide-react';
 import { useGame } from '~/components/game/GameProvider';
 import { GameCanvas } from '~/components/game/GameCanvas';
 import { TouchControls } from '~/components/ui/TouchControls';
@@ -23,9 +23,38 @@ export default function Game() {
   const [gameState, setGameState] = useState<GameStatus>('playing');
   const [currentLevel, setCurrentLevel] = useState(() => parseInt(levelId || '0', 10));
   const [levelDeaths, setLevelDeaths] = useState(0);
-  
-  // Track previous jump state for sound
-  const prevJumpRef = useRef({ p1: false, p2: false });
+  const [isPortrait, setIsPortrait] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detect touch device
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice(
+        'ontouchstart' in window || 
+        navigator.maxTouchPoints > 0 ||
+        window.innerHeight < 500 // Landscape mobile typically has height < 500
+      );
+    };
+    checkTouch();
+    window.addEventListener('resize', checkTouch);
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
+
+  // Check orientation
+  useEffect(() => {
+    const checkOrientation = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+    
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+    
+    return () => {
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
+    };
+  }, []);
 
   // Get initial level data
   const getInitialLevel = () => {
@@ -247,151 +276,156 @@ export default function Game() {
 
   const level = LEVELS[currentLevel];
 
-  return (
-    <div className="min-h-screen bg-bg-dark bg-grid scanlines relative overflow-hidden flex flex-col items-center justify-center p-4 game-layout">
-      {/* Portrait Mode Overlay - shows on mobile portrait */}
-      <div className="portrait-overlay">
-        <svg className="rotate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="2" width="16" height="20" rx="2" className="text-lena" />
-          <path d="M12 18h.01" className="text-kai" />
-          <path d="M2 12l3-3m0 0l-3-3m3 3h16" className="text-white" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+  // Show portrait overlay on mobile portrait mode
+  if (isPortrait && window.innerWidth < 768) {
+    return (
+      <div className="min-h-screen bg-bg-dark flex flex-col items-center justify-center p-8 text-center">
+        <RotateCw size={64} className="text-lena mb-6 animate-pulse" />
         <h2 className="text-2xl font-bold text-white mb-2">Rotate Your Device</h2>
-        <p className="text-gray-400">Please rotate to landscape mode to play</p>
-        <div className="mt-4 text-sm text-lena">↻ Landscape Only</div>
+        <p className="text-gray-400 mb-4">Please rotate to landscape mode to play</p>
+        <div className="text-sm text-lena">↻ Landscape Only</div>
       </div>
+    );
+  }
 
-      {/* Game Content - hidden in portrait mode */}
-      <div className="game-content w-full flex flex-col items-center">
-        {/* Animated background particles */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute w-2 h-2 bg-lena rounded-full animate-float opacity-30" style={{ top: '10%', left: '20%' }} />
-          <div className="absolute w-3 h-3 bg-kai rounded-full animate-float opacity-20" style={{ top: '30%', left: '80%', animationDelay: '1s' }} />
-          <div className="absolute w-2 h-2 bg-accent rounded-full animate-float opacity-25" style={{ top: '70%', left: '10%', animationDelay: '2s' }} />
-          <div className="absolute w-2 h-2 bg-lena rounded-full animate-float opacity-30" style={{ top: '60%', left: '90%', animationDelay: '0.5s' }} />
-        </div>
-
-      {/* HUD Header */}
-      <div className="mb-4 flex justify-between w-full max-w-4xl items-center z-10">
+  return (
+    <div className="min-h-screen h-screen bg-bg-dark bg-grid scanlines relative overflow-hidden flex flex-col">
+      {/* Compact HUD Header */}
+      <div className="flex justify-between items-center px-2 py-1 z-10 shrink-0">
         <button
           onClick={() => navigate('/')}
-          className="hud-item hover:bg-bg-light transition-all duration-200 flex items-center gap-2"
+          className="hud-item p-2"
         >
-          <Home size={20} className="text-lena" />
+          <Home size={18} className="text-lena" />
         </button>
         
-        <div className="hud-item text-center">
-          <div className="text-xl font-bold text-white">{level.name}</div>
-          <div className="text-sm text-gray-400 flex items-center justify-center gap-3">
-            <span className="text-lena">Level {currentLevel + 1}</span>
-            <span className="text-danger">💀 {levelDeaths}</span>
+        <div className="hud-item text-center px-3 py-1">
+          <div className="text-sm font-bold text-white">{level.name}</div>
+          <div className="text-xs text-gray-400 flex items-center justify-center gap-2">
+            <span className="text-lena">Lv.{currentLevel + 1}</span>
+            <span className="text-danger">💀{levelDeaths}</span>
             <span className={isSinglePlayer ? 'text-kai' : 'text-accent'}>{isSinglePlayer ? '1P' : '2P'}</span>
           </div>
         </div>
         
         <button
           onClick={handleRestart}
-          className="hud-item hover:bg-bg-light transition-all duration-200"
+          className="hud-item p-2"
         >
-          <RotateCcw size={20} className="text-kai" />
+          <RotateCcw size={18} className="text-kai" />
         </button>
       </div>
 
-      <div className="relative z-10">
-        <GameCanvas
-          player1={gameRef.current.player1}
-          player2={gameRef.current.player2}
-          level={gameRef.current.level}
-          camera={camera}
-          gameRef={gameRef}
-          isSinglePlayer={isSinglePlayer}
-        />
-
-        {/* Death Overlay */}
-        {gameState === 'dead' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg">
-            <div className="text-center animate-fade-in-up">
-              <h2 className="text-5xl font-bold text-danger mb-4 animate-glitch">WASTED!</h2>
-              <p className="text-gray-400 mb-6">The abyss claims another soul...</p>
-              <button
-                onClick={handleRestart}
-                className="btn-secondary flex items-center gap-2 mx-auto"
-              >
-                <RotateCcw size={20} />
-                Try Again
-              </button>
-            </div>
+      {/* Main Game Area - Horizontal Layout */}
+      <div className="flex-1 flex items-center justify-center gap-2 px-2 pb-2">
+        {/* Left Control - Player 1 */}
+        {isTouchDevice && (
+          <div className="w-24 shrink-0 h-full flex items-center">
+            <TouchControls
+              player1Controls={gameRef.current.player1Touch}
+              player2Controls={gameRef.current.player2Touch}
+              onPlayer1Touch={handlePlayer1Touch}
+              onPlayer2Touch={handlePlayer2Touch}
+              isSinglePlayer={isSinglePlayer}
+              position="left"
+            />
           </div>
         )}
 
-        {/* Level Complete Overlay */}
-        {gameState === 'levelComplete' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg">
-            <div className="text-center animate-fade-in-up">
-              <h2 className="text-5xl font-bold text-success mb-4">Level Complete!</h2>
-              <p className="text-gray-400 mb-6">
-                {isSinglePlayer ? 'You reached the exit!' : 'Both players reached the door!'}
-              </p>
-              <div className="flex gap-4 justify-center">
+        {/* Game Canvas - Center */}
+        <div className="relative flex-1 flex items-center justify-center h-full">
+          <GameCanvas
+            player1={gameRef.current.player1}
+            player2={gameRef.current.player2}
+            level={gameRef.current.level}
+            camera={camera}
+            gameRef={gameRef}
+            isSinglePlayer={isSinglePlayer}
+          />
+
+          {/* Death Overlay */}
+          {gameState === 'dead' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
+              <div className="text-center animate-fade-in-up">
+                <h2 className="text-3xl md:text-5xl font-bold text-danger mb-2 animate-glitch">WASTED!</h2>
                 <button
                   onClick={handleRestart}
-                  className="btn-ghost flex items-center gap-2"
+                  className="btn-secondary flex items-center gap-2 mx-auto text-sm"
                 >
-                  <RotateCcw size={20} />
-                  Replay
-                </button>
-                <button
-                  onClick={handleNextLevel}
-                  className="btn-primary flex items-center gap-2"
-                >
-                  <Play size={20} />
-                  Next Level
+                  <RotateCcw size={16} />
+                  Retry
                 </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Victory Overlay */}
-        {gameState === 'won' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg">
-            <div className="text-center animate-fade-in-up">
-              <Trophy className="w-20 h-20 text-warning mx-auto mb-4 animate-float" />
-              <h2 className="text-5xl font-bold text-warning mb-2 animate-glitch">VICTORY!</h2>
-              <p className="text-gray-400 mb-6">
-                {isSinglePlayer ? 'You escaped from hell!' : 'Both players escaped together!'}
-              </p>
-              <button
-                onClick={() => navigate('/')}
-                className="btn-secondary flex items-center gap-2 mx-auto"
-              >
-                <Home size={20} />
-                Main Menu
-              </button>
+          {/* Level Complete Overlay */}
+          {gameState === 'levelComplete' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
+              <div className="text-center animate-fade-in-up">
+                <h2 className="text-3xl md:text-5xl font-bold text-success mb-2">Complete!</h2>
+                <div className="flex gap-2 justify-center">
+                  <button
+                    onClick={handleRestart}
+                    className="btn-ghost flex items-center gap-1 text-sm px-3 py-1"
+                  >
+                    <RotateCcw size={14} />
+                    Replay
+                  </button>
+                  <button
+                    onClick={handleNextLevel}
+                    className="btn-primary flex items-center gap-1 text-sm px-3 py-1"
+                  >
+                    <Play size={14} />
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
+          )}
+
+          {/* Victory Overlay */}
+          {gameState === 'won' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
+              <div className="text-center animate-fade-in-up">
+                <Trophy className="w-12 h-12 text-warning mx-auto mb-2 animate-float" />
+                <h2 className="text-3xl md:text-5xl font-bold text-warning mb-2">VICTORY!</h2>
+                <button
+                  onClick={() => navigate('/')}
+                  className="btn-secondary flex items-center gap-2 mx-auto text-sm"
+                >
+                  <Home size={16} />
+                  Menu
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Control - Player 2 */}
+        {isTouchDevice && (
+          <div className="w-24 shrink-0 h-full flex items-center">
+            <TouchControls
+              player1Controls={gameRef.current.player1Touch}
+              player2Controls={gameRef.current.player2Touch}
+              onPlayer1Touch={handlePlayer1Touch}
+              onPlayer2Touch={handlePlayer2Touch}
+              isSinglePlayer={isSinglePlayer}
+              position="right"
+            />
           </div>
         )}
       </div>
 
       {/* Controls info for PC */}
-      <div className="hidden md:block mt-4 z-10">
-        <div className="hud-item text-sm text-gray-400 flex gap-6">
-          <span className="text-kai">P1: ← → ↑ (Arrow Keys)</span>
-          {!isSinglePlayer && <span className="text-lena">P2: A D W</span>}
+      {!isTouchDevice && (
+        <div className="pb-2 z-10">
+          <div className="hud-item text-xs text-gray-400 flex gap-4 justify-center mx-auto w-fit">
+            <span className="text-kai">P1: ← → ↑</span>
+            {!isSinglePlayer && <span className="text-lena">P2: A D W</span>}
+          </div>
         </div>
-      </div>
-
-      {/* Touch Controls for Mobile */}
-      <div className="md:hidden w-full z-10">
-        <TouchControls
-          player1Controls={gameRef.current.player1Touch}
-          player2Controls={gameRef.current.player2Touch}
-          onPlayer1Touch={handlePlayer1Touch}
-          onPlayer2Touch={handlePlayer2Touch}
-          isSinglePlayer={isSinglePlayer}
-        />
-      </div>
-      </div>{/* End game-content */}
+      )}
     </div>
   );
 }
