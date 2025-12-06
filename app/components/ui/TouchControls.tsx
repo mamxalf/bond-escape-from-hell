@@ -48,8 +48,8 @@ export function TouchControls({
       // Show empty placeholder in 1P mode (or could show P1 jump button)
       return (
         <div className="flex items-center justify-center h-full opacity-30">
-          <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center">
-            <span className="text-gray-600 text-xs">1P</span>
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center">
+            <span className="text-gray-600 text-[10px] md:text-xs">1P</span>
           </div>
         </div>
       );

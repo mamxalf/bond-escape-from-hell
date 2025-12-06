@@ -234,23 +234,26 @@ html, body {
 
 /* Button Styles */
 .btn-primary {
-  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply px-6 md:px-8 py-3 md:py-4 font-bold rounded-lg transform transition-all duration-200;
   @apply hover:scale-105 active:scale-95;
+  @apply min-h-[44px] text-sm md:text-base;
   background: linear-gradient(135deg, var(--color-lena) 0%, var(--color-lena-dark) 100%);
   box-shadow: 0 4px 20px var(--color-lena-glow);
 }
 
 .btn-secondary {
-  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply px-6 md:px-8 py-3 md:py-4 font-bold rounded-lg transform transition-all duration-200;
   @apply hover:scale-105 active:scale-95;
+  @apply min-h-[44px] text-sm md:text-base;
   background: linear-gradient(135deg, var(--color-kai) 0%, var(--color-kai-dark) 100%);
   box-shadow: 0 4px 20px var(--color-kai-glow);
 }
 
 .btn-ghost {
-  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply px-6 md:px-8 py-3 md:py-4 font-bold rounded-lg transform transition-all duration-200;
   @apply hover:scale-105 active:scale-95 bg-concrete;
   @apply border-2 border-concrete hover:border-lena;
+  @apply min-h-[44px] text-sm md:text-base;
 }
 
 /* Card Styles */
@@ -286,9 +289,14 @@ html, body {
 }
 
 .hud-item {
-  @apply rounded-lg px-4 py-2 backdrop-blur-sm;
+  @apply rounded-lg px-3 md:px-4 py-1.5 md:py-2 backdrop-blur-sm;
+  @apply text-xs md:text-sm;
   background: rgba(26, 26, 46, 0.8);
   border: 1px solid var(--color-concrete);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Preview Indicator */
@@ -353,6 +361,7 @@ html, body {
   .hud-item {
     padding: 0.375rem 0.75rem;
     font-size: 0.75rem;
+    min-height: 40px;
   }
   
   /* Full width game layout */
@@ -373,6 +382,18 @@ html, body {
   
   .touch-controls > * {
     pointer-events: auto;
+  }
+  
+  /* Ensure buttons are touch-friendly */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve text readability on small screens */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 }
 
@@ -424,5 +445,44 @@ html, body {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Additional mobile optimizations */
+@media screen and (max-width: 640px) {
+  /* Smaller text on very small screens */
+  h1 {
+    font-size: clamp(2rem, 8vw, 4rem);
+  }
+  
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+  }
+  
+  /* Better spacing on small screens */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  /* Ensure cards don't overflow */
+  .card-brutalist {
+    max-width: 100%;
+  }
+}
+
+/* Improve touch targets for interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Larger tap targets on touch devices */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+  }
 }
 

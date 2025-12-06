@@ -279,11 +279,11 @@ export default function Game() {
   // Show portrait overlay on mobile portrait mode
   if (isPortrait && window.innerWidth < 768) {
     return (
-      <div className="min-h-screen bg-bg-dark flex flex-col items-center justify-center p-8 text-center">
-        <RotateCw size={64} className="text-lena mb-6 animate-pulse" />
-        <h2 className="text-2xl font-bold text-white mb-2">Rotate Your Device</h2>
-        <p className="text-gray-400 mb-4">Please rotate to landscape mode to play</p>
-        <div className="text-sm text-lena">↻ Landscape Only</div>
+      <div className="min-h-screen bg-bg-dark flex flex-col items-center justify-center p-6 md:p-8 text-center px-4">
+        <RotateCw size={48} className="md:w-16 md:h-16 text-lena mb-4 md:mb-6 animate-pulse" />
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Rotate Your Device</h2>
+        <p className="text-gray-400 mb-4 text-sm md:text-base">Please rotate to landscape mode to play</p>
+        <div className="text-xs md:text-sm text-lena">↻ Landscape Only</div>
       </div>
     );
   }
@@ -291,17 +291,17 @@ export default function Game() {
   return (
     <div className="min-h-screen h-screen bg-bg-dark bg-grid scanlines relative overflow-hidden flex flex-col">
       {/* Compact HUD Header */}
-      <div className="flex justify-between items-center px-2 py-1 z-10 shrink-0">
+      <div className="flex justify-between items-center px-2 md:px-3 py-1.5 md:py-2 z-10 shrink-0">
         <button
           onClick={() => navigate('/')}
-          className="hud-item p-2"
+          className="hud-item p-2 md:p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
         >
-          <Home size={18} className="text-lena" />
+          <Home size={18} className="md:w-5 md:h-5 text-lena" />
         </button>
         
-        <div className="hud-item text-center px-3 py-1">
-          <div className="text-sm font-bold text-white">{level.name}</div>
-          <div className="text-xs text-gray-400 flex items-center justify-center gap-2">
+        <div className="hud-item text-center px-2 md:px-3 py-1 md:py-1.5">
+          <div className="text-xs md:text-sm font-bold text-white">{level.name}</div>
+          <div className="text-[10px] md:text-xs text-gray-400 flex items-center justify-center gap-1.5 md:gap-2">
             <span className="text-lena">Lv.{currentLevel + 1}</span>
             <span className="text-danger">💀{levelDeaths}</span>
             <span className={isSinglePlayer ? 'text-kai' : 'text-accent'}>{isSinglePlayer ? '1P' : '2P'}</span>
@@ -310,9 +310,9 @@ export default function Game() {
         
         <button
           onClick={handleRestart}
-          className="hud-item p-2"
+          className="hud-item p-2 md:p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
         >
-          <RotateCcw size={18} className="text-kai" />
+          <RotateCcw size={18} className="md:w-5 md:h-5 text-kai" />
         </button>
       </div>
 
@@ -320,7 +320,7 @@ export default function Game() {
       <div className="flex-1 flex items-center justify-center gap-2 px-2 pb-2">
         {/* Left Control - Player 1 */}
         {isTouchDevice && (
-          <div className="w-24 shrink-0 h-full flex items-center">
+          <div className="w-20 md:w-24 shrink-0 h-full flex items-center">
             <TouchControls
               player1Controls={gameRef.current.player1Touch}
               player2Controls={gameRef.current.player2Touch}
@@ -346,13 +346,13 @@ export default function Game() {
           {/* Death Overlay */}
           {gameState === 'dead' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
-              <div className="text-center animate-fade-in-up">
-                <h2 className="text-3xl md:text-5xl font-bold text-danger mb-2 animate-glitch">WASTED!</h2>
+              <div className="text-center animate-fade-in-up px-4">
+                <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-danger mb-3 md:mb-4 animate-glitch">WASTED!</h2>
                 <button
                   onClick={handleRestart}
-                  className="btn-secondary flex items-center gap-2 mx-auto text-sm"
+                  className="btn-secondary flex items-center gap-2 mx-auto text-xs md:text-sm min-h-[44px] px-4 md:px-6"
                 >
-                  <RotateCcw size={16} />
+                  <RotateCcw size={16} className="md:w-4 md:h-4" />
                   Retry
                 </button>
               </div>
@@ -362,21 +362,21 @@ export default function Game() {
           {/* Level Complete Overlay */}
           {gameState === 'levelComplete' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
-              <div className="text-center animate-fade-in-up">
-                <h2 className="text-3xl md:text-5xl font-bold text-success mb-2">Complete!</h2>
-                <div className="flex gap-2 justify-center">
+              <div className="text-center animate-fade-in-up px-4">
+                <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-success mb-3 md:mb-4">Complete!</h2>
+                <div className="flex gap-2 md:gap-3 justify-center">
                   <button
                     onClick={handleRestart}
-                    className="btn-ghost flex items-center gap-1 text-sm px-3 py-1"
+                    className="btn-ghost flex items-center gap-1 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2.5 min-h-[44px]"
                   >
-                    <RotateCcw size={14} />
+                    <RotateCcw size={14} className="md:w-4 md:h-4" />
                     Replay
                   </button>
                   <button
                     onClick={handleNextLevel}
-                    className="btn-primary flex items-center gap-1 text-sm px-3 py-1"
+                    className="btn-primary flex items-center gap-1 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2.5 min-h-[44px]"
                   >
-                    <Play size={14} />
+                    <Play size={14} className="md:w-4 md:h-4" />
                     Next
                   </button>
                 </div>
@@ -387,14 +387,14 @@ export default function Game() {
           {/* Victory Overlay */}
           {gameState === 'won' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-lg z-20">
-              <div className="text-center animate-fade-in-up">
-                <Trophy className="w-12 h-12 text-warning mx-auto mb-2 animate-float" />
-                <h2 className="text-3xl md:text-5xl font-bold text-warning mb-2">VICTORY!</h2>
+              <div className="text-center animate-fade-in-up px-4">
+                <Trophy className="w-10 h-10 md:w-12 md:h-12 text-warning mx-auto mb-2 md:mb-3 animate-float" />
+                <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-warning mb-3 md:mb-4">VICTORY!</h2>
                 <button
                   onClick={() => navigate('/')}
-                  className="btn-secondary flex items-center gap-2 mx-auto text-sm"
+                  className="btn-secondary flex items-center gap-2 mx-auto text-xs md:text-sm min-h-[44px] px-4 md:px-6"
                 >
-                  <Home size={16} />
+                  <Home size={16} className="md:w-4 md:h-4" />
                   Menu
                 </button>
               </div>
@@ -404,7 +404,7 @@ export default function Game() {
 
         {/* Right Control - Player 2 */}
         {isTouchDevice && (
-          <div className="w-24 shrink-0 h-full flex items-center">
+          <div className="w-20 md:w-24 shrink-0 h-full flex items-center">
             <TouchControls
               player1Controls={gameRef.current.player1Touch}
               player2Controls={gameRef.current.player2Touch}
@@ -419,8 +419,8 @@ export default function Game() {
 
       {/* Controls info for PC */}
       {!isTouchDevice && (
-        <div className="pb-2 z-10">
-          <div className="hud-item text-xs text-gray-400 flex gap-4 justify-center mx-auto w-fit">
+        <div className="pb-2 md:pb-3 z-10">
+          <div className="hud-item text-[10px] md:text-xs text-gray-400 flex gap-2 md:gap-4 justify-center mx-auto w-fit px-2 md:px-3 py-1 md:py-1.5">
             <span className="text-kai">P1: ← → ↑</span>
             {!isSinglePlayer && <span className="text-lena">P2: A D W</span>}
           </div>

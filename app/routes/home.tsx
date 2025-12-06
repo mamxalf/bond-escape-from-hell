@@ -15,7 +15,7 @@ export default function Home() {
   const { totalDeaths } = useGame();
 
   return (
-    <div className="min-h-screen bg-bg-dark bg-grid scanlines relative overflow-hidden flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-bg-dark bg-grid scanlines relative overflow-hidden flex flex-col items-center justify-center p-4 md:p-6">
       {/* Animated background particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute w-2 h-2 bg-lena rounded-full animate-float opacity-30" style={{ top: '10%', left: '20%' }} />
@@ -26,68 +26,68 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <div className="text-center z-10">
+      <div className="text-center z-10 w-full px-4">
         {/* Logo/Title */}
-        <div className="mb-8">
-          <h1 className="text-7xl md:text-8xl font-black mb-2 animate-glitch">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-2 animate-glitch">
             <span className="text-kai">B</span>
             <span className="text-white">O</span>
             <span className="text-lena">N</span>
             <span className="text-white">D</span>
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-kai via-accent to-lena rounded-full mb-4" />
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-300 tracking-widest animate-fade-in-up">
+          <div className="h-1 w-32 md:w-48 mx-auto bg-gradient-to-r from-kai via-accent to-lena rounded-full mb-4" />
+          <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-300 tracking-widest animate-fade-in-up">
             ESCAPE FROM HELL
           </h2>
-          <p className="text-gray-500 mt-2 text-sm">A cooperative platformer adventure</p>
+          <p className="text-gray-500 mt-2 text-xs md:text-sm">A cooperative platformer adventure</p>
         </div>
 
         {/* Menu buttons */}
-        <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="space-y-3 md:space-y-4 animate-fade-in-up w-full max-w-xs mx-auto" style={{ animationDelay: '0.2s' }}>
           <button
             onClick={() => navigate('/mode-select')}
-            className="w-72 btn-primary flex items-center justify-center gap-3 mx-auto"
+            className="w-full max-w-xs md:w-72 btn-primary flex items-center justify-center gap-2 md:gap-3 mx-auto min-h-[44px]"
           >
-            <Play size={24} />
-            PLAY GAME
+            <Play size={20} className="md:w-6 md:h-6" />
+            <span className="text-sm md:text-base">PLAY GAME</span>
           </button>
           
           <button
             onClick={() => navigate('/level-select')}
-            className="w-72 btn-ghost border-lena hover:bg-lena/10 flex items-center justify-center gap-3 mx-auto"
+            className="w-full max-w-xs md:w-72 btn-ghost border-lena hover:bg-lena/10 flex items-center justify-center gap-2 md:gap-3 mx-auto min-h-[44px]"
           >
-            <Trophy size={24} className="text-lena" />
-            <span className="text-lena">LEVEL SELECT</span>
+            <Trophy size={20} className="md:w-6 md:h-6 text-lena" />
+            <span className="text-lena text-sm md:text-base">LEVEL SELECT</span>
           </button>
           
           <button
             onClick={() => navigate('/settings')}
-            className="w-72 btn-ghost flex items-center justify-center gap-3 mx-auto"
+            className="w-full max-w-xs md:w-72 btn-ghost flex items-center justify-center gap-2 md:gap-3 mx-auto min-h-[44px]"
           >
-            <Settings size={24} />
-            SETTINGS
+            <Settings size={20} className="md:w-6 md:h-6" />
+            <span className="text-sm md:text-base">SETTINGS</span>
           </button>
         </div>
 
         {/* Death counter */}
-        <div className="mt-12 flex items-center justify-center gap-2 text-gray-500 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <div className="mt-8 md:mt-12 flex items-center justify-center gap-2 text-gray-500 animate-fade-in-up text-sm md:text-base" style={{ animationDelay: '0.4s' }}>
           <Skull size={16} className="text-danger" />
           <span>Total Deaths: <span className="text-danger font-bold">{totalDeaths}</span></span>
         </div>
 
         {/* Controls hint */}
-        <div className="mt-8 text-xs text-gray-600 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+        <div className="mt-6 md:mt-8 text-xs md:text-sm text-gray-600 animate-fade-in-up px-4" style={{ animationDelay: '0.6s' }}>
           <p className="mb-1">PC Controls</p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-2 md:gap-4 flex-wrap">
             <span className="text-kai">P1: Arrow Keys</span>
-            <span className="text-gray-700">|</span>
+            <span className="text-gray-700 hidden sm:inline">|</span>
             <span className="text-lena">P2: WASD</span>
           </div>
         </div>
       </div>
 
       {/* Version tag */}
-      <div className="absolute bottom-4 right-4 text-xs text-gray-700">
+      <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4 text-[10px] md:text-xs text-gray-700">
         v2.0.0
       </div>
     </div>
