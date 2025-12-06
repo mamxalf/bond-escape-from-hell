@@ -665,3 +665,4 @@ export const LEVELS: Level[] = [
     spawn2: { x: 50, y: 500 }
   }
 ];
+

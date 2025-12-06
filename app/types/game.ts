@@ -115,3 +115,4 @@ export interface PlayerControls {
 export type GameStatus = 'playing' | 'dead' | 'levelComplete' | 'won' | 'paused';
 
 export type GameMode = '1p' | '2p';
+

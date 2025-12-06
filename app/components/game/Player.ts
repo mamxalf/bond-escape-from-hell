@@ -66,3 +66,4 @@ export function updatePlayerPosition(player: Player, canvasWidth: number, canvas
   player.grounded = false;
 }
 
+
