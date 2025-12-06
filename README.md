@@ -1,18 +1,18 @@
-# Welcome to React Router!
+# Bond: Escape from Hell to Paradise
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A challenging 2-player cooperative platformer game built with React Router and CapacitorJS.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
 
 ## Features
 
-- 🚀 Server-side rendering
+- 🎮 2-player cooperative split-screen gameplay
+- 📱 Mobile-ready with CapacitorJS for Android/iOS
 - ⚡️ Hot Module Replacement (HMR)
 - 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
 - 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- 🎨 TailwindCSS for styling
+- 📖 Built with React Router
 
 ## Getting Started
 
@@ -41,6 +41,78 @@ Create a production build:
 ```bash
 npm run build
 ```
+
+## Building for Mobile (Capacitor)
+
+### Prerequisites
+
+- Node.js and npm installed
+- Android Studio (for Android builds)
+- Xcode (for iOS builds on macOS)
+
+### Setup Android
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Build the web app:
+```bash
+npm run build
+```
+
+3. Add Android platform (first time only):
+```bash
+npm run cap:add android
+```
+
+4. Sync web assets with Capacitor:
+```bash
+npm run cap:sync
+```
+
+5. Open in Android Studio:
+```bash
+npm run cap:open
+```
+
+Then build and run from Android Studio.
+
+### Setup iOS (macOS only)
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Build the web app:
+```bash
+npm run build
+```
+
+3. Add iOS platform (first time only):
+```bash
+npm run cap:add ios
+```
+
+4. Sync web assets with Capacitor:
+```bash
+npm run cap:sync
+```
+
+5. Open in Xcode:
+```bash
+npm run cap:open
+```
+
+Then build and run from Xcode.
+
+### Important Notes
+
+- After making changes to the web app, run `npm run build` and then `npm run cap:sync` to update the native app
+- Native configuration can be edited in `capacitor.config.ts`
+- The `webDir` in `capacitor.config.ts` points to `build/client` (React Router output)
 
 ## Deployment
 

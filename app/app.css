@@ -3,13 +3,446 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  /* Neo-Brutalist Cyberpunk Colors */
+  --color-bg-dark: #0a0a0f;
+  --color-bg-medium: #1a1a2e;
+  --color-bg-light: #2d2d44;
+  --color-concrete: #4a4a5a;
+  
+  /* Lena Colors - Cyan/Teal (Time) */
+  --color-lena: #00d4ff;
+  --color-lena-dark: #0099cc;
+  --color-lena-glow: rgba(0, 212, 255, 0.5);
+  
+  /* Kai Colors - Amber/Orange (Gravity) */
+  --color-kai: #ff9500;
+  --color-kai-dark: #cc7700;
+  --color-kai-glow: rgba(255, 149, 0, 0.5);
+  
+  /* UI Colors */
+  --color-success: #00ff88;
+  --color-danger: #ff4757;
+  --color-warning: #feca57;
+  --color-accent: #a855f7;
 }
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
+/* Base Styles */
+html, body {
+  @apply bg-bg-dark text-white;
+  color-scheme: dark;
+  overflow: hidden;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+/* ============================================ */
+/* ANIMATIONS */
+/* ============================================ */
+
+/* Glitch Effect */
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 var(--color-lena), -0.05em -0.025em 0 var(--color-kai);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 var(--color-lena), -0.05em -0.025em 0 var(--color-kai);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 var(--color-lena), 0.025em 0.025em 0 var(--color-kai);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 var(--color-lena), 0.025em 0.025em 0 var(--color-kai);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 var(--color-lena), 0.05em 0 0 var(--color-kai);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 var(--color-lena), 0.05em 0 0 var(--color-kai);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 var(--color-lena), -0.025em -0.025em 0 var(--color-kai);
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-2deg); }
+  40% { transform: skew(3deg); }
+  60% { transform: skew(-1deg); }
+  80% { transform: skew(2deg); }
+  100% { transform: skew(0deg); }
+}
+
+.animate-glitch {
+  animation: glitch 1s infinite linear alternate-reverse, glitch-skew 1s infinite;
+}
+
+/* Neon Pulse */
+@keyframes neon-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px var(--color-lena)) drop-shadow(0 0 10px var(--color-lena));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px var(--color-lena)) drop-shadow(0 0 40px var(--color-lena));
+  }
+}
+
+@keyframes neon-pulse-kai {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px var(--color-kai)) drop-shadow(0 0 10px var(--color-kai));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px var(--color-kai)) drop-shadow(0 0 40px var(--color-kai));
+  }
+}
+
+.animate-neon-lena {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.animate-neon-kai {
+  animation: neon-pulse-kai 2s ease-in-out infinite;
+}
+
+/* Fade In Up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Loading Bar */
+@keyframes loading-bar {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.animate-loading {
+  animation: loading-bar 3s ease-in-out forwards;
+}
+
+/* Rewind Effect */
+@keyframes rewind {
+  0% { filter: invert(0) hue-rotate(0deg); }
+  25% { filter: invert(0.2) hue-rotate(90deg); }
+  50% { filter: invert(0.3) hue-rotate(180deg); }
+  75% { filter: invert(0.2) hue-rotate(270deg); }
+  100% { filter: invert(0) hue-rotate(360deg); }
+}
+
+.animate-rewind {
+  animation: rewind 0.5s linear infinite;
+}
+
+/* Wireframe Ghost Effect */
+@keyframes ghost-flicker {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.animate-ghost {
+  animation: ghost-flicker 0.5s ease-in-out infinite;
+}
+
+/* Death Particles */
+@keyframes death-particle {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translate(var(--tx, 50px), var(--ty, -50px));
+    opacity: 0;
+  }
+}
+
+.animate-death-particle {
+  animation: death-particle 0.8s ease-out forwards;
+}
+
+/* Sync Meter Glow */
+@keyframes sync-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px var(--color-accent);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--color-accent), 0 0 60px var(--color-accent);
+  }
+}
+
+.animate-sync-glow {
+  animation: sync-glow 1s ease-in-out infinite;
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Grid Background */
+.bg-grid {
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scanlines */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* Split Screen Divider */
+.split-divider {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--color-lena) 0%,
+    var(--color-accent) 50%,
+    var(--color-kai) 100%
+  );
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Button Styles */
+.btn-primary {
+  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply hover:scale-105 active:scale-95;
+  background: linear-gradient(135deg, var(--color-lena) 0%, var(--color-lena-dark) 100%);
+  box-shadow: 0 4px 20px var(--color-lena-glow);
+}
+
+.btn-secondary {
+  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply hover:scale-105 active:scale-95;
+  background: linear-gradient(135deg, var(--color-kai) 0%, var(--color-kai-dark) 100%);
+  box-shadow: 0 4px 20px var(--color-kai-glow);
+}
+
+.btn-ghost {
+  @apply px-8 py-4 font-bold rounded-lg transform transition-all duration-200;
+  @apply hover:scale-105 active:scale-95 bg-concrete;
+  @apply border-2 border-concrete hover:border-lena;
+}
+
+/* Card Styles */
+.card-brutalist {
+  @apply bg-bg-light rounded-lg border-2 border-concrete;
+  @apply transform transition-all duration-200;
+  box-shadow: 5px 5px 0 var(--color-concrete);
+}
+
+.card-brutalist:hover {
+  box-shadow: 8px 8px 0 var(--color-concrete);
+  transform: translate(-3px, -3px);
+}
+
+/* Level Card */
+.level-card {
+  @apply aspect-square rounded-xl flex flex-col items-center justify-center;
+  @apply transform transition-all duration-200 hover:scale-105;
+}
+
+.level-card.unlocked {
+  background: linear-gradient(135deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
+  @apply cursor-pointer border-2 border-lena;
+}
+
+.level-card.locked {
+  @apply bg-bg-medium cursor-not-allowed opacity-50 border-2 border-concrete;
+}
+
+/* HUD Styles */
+.hud-container {
+  @apply absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none;
+}
+
+.hud-item {
+  @apply rounded-lg px-4 py-2 backdrop-blur-sm;
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid var(--color-concrete);
+}
+
+/* Preview Indicator */
+.preview-cooldown {
+  @apply relative w-12 h-12 rounded-full;
+  background: conic-gradient(
+    var(--color-lena) var(--progress, 100%),
+    var(--color-concrete) var(--progress, 100%)
+  );
+}
+
+.preview-cooldown::after {
+  content: '';
+  @apply absolute inset-1 rounded-full bg-bg-dark;
+}
+
+/* Sync Meter */
+.sync-meter {
+  @apply w-48 h-4 rounded-full overflow-hidden;
+  background: var(--color-bg-dark);
+  border: 2px solid var(--color-accent);
+}
+
+.sync-meter-fill {
+  @apply h-full transition-all duration-300;
+  background: linear-gradient(90deg, var(--color-lena) 0%, var(--color-accent) 50%, var(--color-kai) 100%);
+}
+
+/* Chapter Badge */
+.chapter-badge {
+  @apply px-3 py-1 text-sm font-bold rounded-full;
+  background: var(--color-accent);
+}
+
+/* Star Rating */
+.star {
+  @apply w-6 h-6 transition-all duration-200;
+}
+
+.star.filled {
+  color: var(--color-warning);
+  filter: drop-shadow(0 0 5px var(--color-warning));
+}
+
+.star.empty {
+  color: var(--color-concrete);
+}
+
+/* ============================================ */
+/* MOBILE LANDSCAPE ORIENTATION */
+/* ============================================ */
+
+/* Portrait Mode Overlay - shows "rotate device" message */
+.portrait-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg-dark);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  .portrait-overlay {
+    display: flex;
+  }
+  
+  .game-content {
+    display: none;
+  }
+}
+
+.rotate-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.5rem;
+  animation: rotate-phone 2s ease-in-out infinite;
+}
+
+@keyframes rotate-phone {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+/* Landscape-specific game layout */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+  .game-layout {
+    flex-direction: row;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .game-canvas-container {
+    flex: 1;
+    max-height: 100vh;
+  }
+  
+  .mobile-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  
+  .mobile-controls > * {
+    pointer-events: auto;
+  }
+  
+  .game-hud {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    z-index: 50;
+  }
+}
+
+/* Fullscreen game on mobile landscape */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .game-header {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .hud-item {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .analog-joystick {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .analog-stick {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: max(0px)) {
+  .game-layout {
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 }

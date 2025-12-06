@@ -6,17 +6,24 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "cap:add": "cap add",
+    "cap:sync": "cap sync",
+    "cap:open": "cap open"
   },
   "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
     "@react-router/node": "7.10.1",
     "@react-router/serve": "7.10.1",
     "isbot": "^5.1.31",
+    "lucide-react": "^0.263.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-router": "7.10.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
     "@react-router/dev": "7.10.1",
     "@tailwindcss/vite": "^4.1.13",
     "@types/node": "^22",
