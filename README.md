@@ -1,159 +1,93 @@
 # Bond: Escape from Hell to Paradise
 
-A challenging 2-player cooperative platformer game built with React Router and CapacitorJS.
+Welcome to **Bond: Escape from Hell to Paradise**, a challenging 2-player cooperative platformer where trust and synchronization are your only keys to survival.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+![Bond Game Splash](public/favicon.ico)
 
-## Features
+## 🎮 Game Overview
 
-- 🎮 2-player cooperative split-screen gameplay
-- 📱 Mobile-ready with CapacitorJS for Android/iOS
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔒 TypeScript by default
-- 🎨 TailwindCSS for styling
-- 📖 Built with React Router
+In this split-screen adventure, two players control Kai and Lena—two souls bound by destiny—as they attempt to ascend from the depths of Hell. The twist? **Asymmetric Foresight**.
 
-## Getting Started
+- **Kai (Player 1)** is a devilish rogue who sees obstacles and platforms that Lena cannot.
+- **Lena (Player 2)** is an angelic spirit who reveals paths hidden from Kai.
+
+Players must communicate constantly to guide each other through invisible hazards. If one falls, both restart.
+
+## ✨ Features
+
+- **Co-op Split-Screen Gameplay**: True local multiplayer experience on a single screen.
+- **Asymmetric Mechanics**: Each player perceives a different version of the reality.
+- **Cross-Platform**: Playable on Web, Android, and iOS.
+- **Dynamic Audio**: Immersive background music and sound effects.
+- **Touch & Keyboard Support**: Seamlessly switch between desktop and mobile play.
+
+## 🕹️ Controls
+
+### Desktop (Keyboard)
+| Action | Player 1 (Kai) | Player 2 (Lena) |
+|--------|----------------|-----------------|
+| **Move Left** | Left Arrow | A |
+| **Move Right** | Right Arrow | D |
+| **Jump** | Up Arrow | W |
+
+### Mobile (Touch)
+On-screen controls will appear automatically on mobile devices.
+- **Landscape Mode** is required for the best experience.
+
+## 🚀 Tech Stack
+
+- **Framework**: [React Router 7](https://reactrouter.com/)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Graphics**: HTML5 Canvas API
+- **Mobile Runtime**: CapacitorJS
+- **Audio**: Web Audio API
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- npm
 
 ### Installation
 
-Install the dependencies:
-
 ```bash
+git clone https://github.com/mamxalf/bond-escape-from-hell.git
+cd bond-escape-from-hell
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+### Running Locally
 
 ```bash
 npm run dev
 ```
+Open `http://localhost:5173` in your browser.
 
-Your application will be available at `http://localhost:5173`.
+## 📱 building for Mobile
 
-## Building for Production
-
-Create a production build:
-
+### Android
 ```bash
 npm run build
-```
-
-## Building for Mobile (Capacitor)
-
-### Prerequisites
-
-- Node.js and npm installed
-- Android Studio (for Android builds)
-- Xcode (for iOS builds on macOS)
-
-### Setup Android
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Build the web app:
-```bash
-npm run build
-```
-
-3. Add Android platform (first time only):
-```bash
-npm run cap:add android
-```
-
-4. Sync web assets with Capacitor:
-```bash
 npm run cap:sync
+npm run cap:open android
 ```
 
-5. Open in Android Studio:
-```bash
-npm run cap:open
-```
-
-Then build and run from Android Studio.
-
-### Setup iOS (macOS only)
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Build the web app:
+### iOS (macOS only)
 ```bash
 npm run build
-```
-
-3. Add iOS platform (first time only):
-```bash
-npm run cap:add ios
-```
-
-4. Sync web assets with Capacitor:
-```bash
 npm run cap:sync
+npm run cap:open ios
 ```
 
-5. Open in Xcode:
-```bash
-npm run cap:open
-```
+## 🤝 Contributing
 
-Then build and run from Xcode.
-
-### Important Notes
-
-- After making changes to the web app, run `npm run build` and then `npm run cap:sync` to update the native app
-- Native configuration can be edited in `capacitor.config.ts`
-- The `webDir` in `capacitor.config.ts` points to `build/client` (React Router output)
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ---
 
-Built with ❤️ using React Router.
+Built with ❤️ by FPK Creative
